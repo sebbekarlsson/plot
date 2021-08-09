@@ -4,12 +4,12 @@
 #include FT_FREETYPE_H
 #include <GL/glew.h>
 
-void draw_text(GlyphMap *characters, float x, float y, float z,
-               ShaderProgram *program, Color color, float scale) {
+void draw_text(GlyphMap* characters, float x, float y, float z, ShaderProgram* program, Color color,
+               float scale)
+{
   program->bind();
 
-  for (GlyphMap::iterator it = characters->begin(); it != characters->end();
-       it++) {
+  for (GlyphMap::iterator it = characters->begin(); it != characters->end(); it++) {
     Character ch = (*it);
 
     float xpos = x + ch.bearing.x * scale;
@@ -30,15 +30,15 @@ void draw_text(GlyphMap *characters, float x, float y, float z,
     // ch.image->set_reversed(true);
 
     ch.image->draw();
-    x += (ch.advance >> 6) *
-         scale; // bitshift by 6 to get value in pixels (2^6 = 64)
+    x += (ch.advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64)
   }
 
   // glBindVertexArray(0);
 }
 
-GlyphMap *get_text(const char *text, float font_size, const char *family) {
-  GlyphMap *characters = new GlyphMap();
+GlyphMap* get_text(const char* text, float font_size, const char* family)
+{
+  GlyphMap* characters = new GlyphMap();
   FT_Library ft;
   if (FT_Init_FreeType(&ft)) {
     printf("Could not load freetype library.\n");
@@ -68,9 +68,8 @@ GlyphMap *get_text(const char *text, float font_size, const char *family) {
     unsigned int texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width,
-                 face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE,
-                 face->glyph->bitmap.buffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0,
+                 GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -83,11 +82,10 @@ GlyphMap *get_text(const char *text, float font_size, const char *family) {
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // now store character for later use
-    Character character = {
-        new Image(texture),
-        glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-        glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-        face->glyph->advance.x};
+    Character character = { new Image(texture),
+                            glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+                            glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+                            face->glyph->advance.x };
     characters->push_back(character);
   }
 
@@ -97,10 +95,10 @@ GlyphMap *get_text(const char *text, float font_size, const char *family) {
   return characters;
 }
 
-float get_text_width(GlyphMap *characters) {
+float get_text_width(GlyphMap* characters)
+{
   float width = 0;
-  for (GlyphMap::iterator it = characters->begin(); it != characters->end();
-       it++) {
+  for (GlyphMap::iterator it = characters->begin(); it != characters->end(); it++) {
     Character ch = (*it);
     float w = ch.size.x * 1;
     width += w;
@@ -109,9 +107,9 @@ float get_text_width(GlyphMap *characters) {
   return width;
 }
 
-float get_text_height(GlyphMap *characters) {
-  for (GlyphMap::iterator it = characters->begin(); it != characters->end();
-       it++) {
+float get_text_height(GlyphMap* characters)
+{
+  for (GlyphMap::iterator it = characters->begin(); it != characters->end(); it++) {
     Character ch = (*it);
     float h = ch.size.y * 1;
     return h;

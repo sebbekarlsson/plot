@@ -1,6 +1,5 @@
-#include <utils.hpp>
 #include <stdlib.h>
-
+#include <utils.hpp>
 
 std::vector<double> linspace(double start, double end, double num)
 {
@@ -22,7 +21,6 @@ std::vector<double> linspace(double start, double end, double num)
   return linspaced;
 }
 
-
 float* convolve(float* invec, int len, float* kernel, int K, float mix)
 {
 
@@ -37,10 +35,10 @@ float* convolve(float* invec, int len, float* kernel, int K, float mix)
   return outvec;
 }
 
-
-float* smoothen(float* data, int data_len, float mix) {
+float* smoothen(float* data, int data_len, float mix)
+{
   float kernel[15] = { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.5f, 0.6f, 1.0f,
-  0.6f, 0.5f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f };
+                       0.6f, 0.5f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f };
 
   return convolve(data, data_len, kernel, 15, mix);
 }

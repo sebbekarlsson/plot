@@ -6,8 +6,8 @@
 
 BMP::BMP(int width, int height)
   : width(width)
-  , height(height),
-    gl_texture(0)
+  , height(height)
+  , gl_texture(0)
 {
   this->data = (uint8_t*)malloc(3 * width * height);
   memset(this->data, 0, 3 * width * height);

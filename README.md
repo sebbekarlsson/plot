@@ -1,3 +1,24 @@
+# plot
+> C++ plot library
+
+<div style="text-align: center;" align="center">
+    <img src="img/scrot.png">
+</div>
+
+## Building it
+> First make sure you have `cmake` installed,
+> then run the following commands:
+``` bash
+./pull_deps.sh
+mkdir build && cd build && cmake ../ && make
+```
+> This will generate the following targets:
+* libplot.a
+* plot_e
+
+## Using it
+> Here's a minimal example:
+``` C++
 #include <Plot.hpp>
 #include <cmath>
 
@@ -34,3 +55,4 @@ int main(int argc, char* argv[])
 
   return 0;
 }
+```

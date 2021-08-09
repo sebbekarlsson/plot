@@ -57,7 +57,6 @@ void PlotWindow::show()
 
   window = glfwCreateWindow(this->width, this->height, "Plot", NULL, NULL);
 
-
   if (window == NULL) {
     printf("Failed to show window.\n");
     glfwTerminate();
@@ -101,13 +100,11 @@ void PlotWindow::update()
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     glfwSetWindowShouldClose(window, true);
 
-
-  for (std::vector<Actor*>::iterator it = actors.begin(); it != actors.end(); it++){
+  for (std::vector<Actor*>::iterator it = actors.begin(); it != actors.end(); it++) {
     Actor* actor = *it;
 
-
     if (!actor->get_shader_program()) {
-        actor->set_shader_program(this->program);
+      actor->set_shader_program(this->program);
     }
 
     actor->update();
@@ -118,16 +115,12 @@ void PlotWindow::draw()
 {
   pre_draw();
 
-  //draw_line(program, { 0, 0, 0 }, { 128, 128, 0 }, COLOR(48, 48, 48, 1));
-
-  for (std::vector<Actor*>::iterator it = actors.begin(); it != actors.end(); it++){
+  for (std::vector<Actor*>::iterator it = actors.begin(); it != actors.end(); it++) {
     glBindVertexArray(VAO);
 
     Actor* actor = *it;
     actor->draw();
   }
-
-  //draw_quad(program, 0, 0, 0, width, height);
 
   post_draw();
 }
@@ -138,7 +131,6 @@ void PlotWindow::pre_draw()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glViewport(0, 0, get_width(), get_height());
   glEnable(GL_DEPTH_TEST);
-  //
 
   glBindVertexArray(VAO);
   glEnable(GL_BLEND);
@@ -160,7 +152,7 @@ GLFWwindow* PlotWindow::get_ptr()
   return window;
 }
 
-
-void PlotWindow::add(Actor* actor) {
+void PlotWindow::add(Actor* actor)
+{
   actors.push_back(actor);
 }
