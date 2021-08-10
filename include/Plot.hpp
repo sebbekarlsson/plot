@@ -9,6 +9,7 @@ class Plot: public Actor {
   public:
     Plot(float x, float y, int width, int height);
     Plot(int width, int height);
+    ~Plot();
 
     void set_data(float* data, int len);
     void save(const char* filename);
@@ -27,18 +28,25 @@ class Plot: public Actor {
 
     void draw();
 
+    void set_scale(float scale);
+    float get_scale();
+
+    void set_smooth(bool smooth);
+
     void update();
 
-  private:
+    private:
+    bool smooth;
+    float scale;
     float* data;
     float* computed_data;
+    float peak;
+    float bottom;
     int len;
     int width;
     int height;
     BMP* bmp;
     pthread_t t;
-    std::vector<GlyphMap*> x_text;
-    std::vector<GlyphMap*> y_text;
 };
 
 

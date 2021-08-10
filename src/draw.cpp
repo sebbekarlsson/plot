@@ -1,5 +1,6 @@
 #include <Font.hpp>
 #include <GL/glew.h>
+#include <ShaderManager.hpp>
 #include <cassert>
 #include <draw.hpp>
 #include <glm/glm.hpp>
@@ -8,9 +9,12 @@
 #include <stdio.h>
 #include <utils.hpp>
 
-void draw_quad(ShaderProgram* program, float x, float y, float z, float width, float height,
-               Color color)
+extern ShaderManager* SHADER_MANAGER;
+
+void draw_quad(float x, float y, float z, float width, float height, Color color)
 {
+  ShaderProgram* program = SHADER_MANAGER->current();
+
   assert(program != 0);
 
   unsigned int VBO;
@@ -60,9 +64,9 @@ void draw_quad(ShaderProgram* program, float x, float y, float z, float width, f
   // glBindVertexArray(0);
 }
 
-void draw_quad_reversed(ShaderProgram* program, float x, float y, float z, float width,
-                        float height, Color color)
+void draw_quad_reversed(float x, float y, float z, float width, float height, Color color)
 {
+  ShaderProgram* program = SHADER_MANAGER->current();
   assert(program != 0);
 
   unsigned int VBO;
@@ -78,8 +82,8 @@ void draw_quad_reversed(ShaderProgram* program, float x, float y, float z, float
   float b = 0;
 
   float vertices[] = {
-    0.0f, 0.0f, 0.0f, r, g, b, 0.0f, 0.0f, w,    0.0f, 0.0f, r, g, b, 1.0f, 0.0f,
-    w,    -h,   0.0f, r, g, b, 1.0f, 1.0f, 0.0f, -h,   0.0f, r, g, b, 0.0f, 1.0f
+    0.0f, 0.0f, 0.0f, r, g, b, 0.0f, 1.0f, w,    0.0f, 0.0f, r, g, b, 1.0f, 1.0f,
+    w,    -h,   0.0f, r, g, b, 1.0f, 0.0f, 0.0f, -h,   0.0f, r, g, b, 0.0f, 0.0f
   };
 
   unsigned int indices[] = {
@@ -112,8 +116,15 @@ void draw_quad_reversed(ShaderProgram* program, float x, float y, float z, float
   // glBindVertexArray(0);
 }
 
-void draw_line(ShaderProgram* program, glm::vec3 start, glm::vec3 end, Color color)
+void draw_line(glm::vec3 start, glm::vec3 end, Color color)
 {
+  if (!SHADER_MANAGER)
+    return;
+  SHADER_MANAGER->save();
+  ShaderProgram* program = SHADER_MANAGER->set("color");
+  if (!program)
+    return;
+
   assert(program != 0);
 
   unsigned int VBO;
@@ -129,21 +140,10 @@ void draw_line(ShaderProgram* program, glm::vec3 start, glm::vec3 end, Color col
   program->set_value4f("color", color.r, color.g, color.b, color.a);
 
   // translate
-  float VERTICES[] = { // positions               // colors
-                       0,
-                       0,
-                       /*start.x, start.y,*/ start.z,
-                       color.r / 255.0f,
-                       color.g / 255.0f,
-                       color.b / 255.0f,
-                       color.a,
-                       end.x,
-                       end.y,
-                       end.z,
-                       color.r / 255.0f,
-                       color.g / 255.0f,
-                       color.b / 255.0f,
-                       color.a
+  float VERTICES[] = {
+    // positions               // colors
+    start.x, start.y, start.z, color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a,
+    end.x,   end.y,   end.z,   color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a
   };
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -157,13 +157,15 @@ void draw_line(ShaderProgram* program, glm::vec3 start, glm::vec3 end, Color col
   glEnableVertexAttribArray(1);
 
   glDrawArrays(GL_LINES, 0, 3);
+  SHADER_MANAGER->restore();
 
   // glBindVertexArray(0);
 }
 
-void draw_plot(ShaderProgram* program, Plot* plot, float x, float y, float z, Color color)
+void draw_plot(Plot* plot, float x, float y, float z, Color color)
 {
-  assert(program != 0);
+
+  SHADER_MANAGER->set("color");
 
   float* data = plot->get_data();
 
@@ -174,6 +176,6 @@ void draw_plot(ShaderProgram* program, Plot* plot, float x, float y, float z, Co
 
   for (int x = 0; x < w; x++) {
     float y = data[x];
-    draw_quad(program, x, h / 2, 0, 1, -y, color);
+    draw_quad(x, h / 2, z, 1, -y, color);
   }
 }

@@ -1,5 +1,37 @@
+#include <cmath>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <utils.hpp>
+
+float* linspace2(float start, float end, float inc, int* len)
+{
+  float s = std::ceil(start);
+  float e = std::ceil(e);
+  *len = std::ceil(std::max(s / inc, e / inc) - std::min(s / inc, e / inc));
+  float* arr = 0;
+  float sum = 0;
+
+  while (sum < std::ceil(end + inc)) {
+    *len += 1;
+    arr = (float*)realloc(arr, (*len) * sizeof(float));
+    arr[(*len) - 1] = sum;
+    sum += inc;
+  }
+
+  return arr;
+}
+
+float* linspace3(float start, float end, float inc, int* len)
+{
+  *len = std::max(start / inc, end / inc) - std::min(start / inc, end / inc);
+  float* arr = (float*)calloc(*len, sizeof(float));
+
+  for (float i = 0; i < end; i += inc) {
+    arr[(int)i / (*len)] = i;
+  }
+  return arr;
+}
 
 std::vector<double> linspace(double start, double end, double num)
 {
@@ -40,5 +72,8 @@ float* smoothen(float* data, int data_len, float mix)
   float kernel[15] = { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.5f, 0.6f, 1.0f,
                        0.6f, 0.5f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f };
 
-  return convolve(data, data_len, kernel, 15, mix);
+  float* newarr = (float*)calloc(data_len, sizeof(float));
+  memcpy(newarr, &data[0], data_len * sizeof(float));
+
+  return convolve(newarr, data_len, kernel, 15, mix);
 }

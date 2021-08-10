@@ -13,16 +13,28 @@ struct Character {
     glm::ivec2   size;       // Size of glyph
     glm::ivec2   bearing;    // Offset from baseline to left/top of glyph
     long int advance;    // Offset to advance to next glyph
+    char value;
 };
+
+
+typedef struct {
+    float width;
+    float height;
+} TextMeasure;
 
 typedef std::vector<Character> GlyphMap;
 
-void draw_text(GlyphMap* characters, float x, float y, float z, ShaderProgram* program, Color color, float scale);
+void draw_text(const char* text, float x, float y, float z, Color color,
+               float scale, float font_size, const char* family);
 
 GlyphMap* get_text(const char* text, float font_size, const char* family);
 
 
 float get_text_width(GlyphMap* characters);
 float get_text_height(GlyphMap* characters);
+
+
+
+TextMeasure get_text_measurement(const char* text, float font_size, const char* family);
 
 #endif

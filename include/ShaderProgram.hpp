@@ -24,6 +24,7 @@ class ShaderProgram {
 
   private:
     unsigned int program;
+    unsigned int compiled;
     std::vector<Shader*> shaders;
 };
 

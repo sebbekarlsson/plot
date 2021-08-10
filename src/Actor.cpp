@@ -22,12 +22,3 @@ void Actor::set_y(float y)
 {
   this->y = y;
 }
-
-void Actor::set_shader_program(ShaderProgram* program)
-{
-  this->program = program;
-}
-ShaderProgram* Actor::get_shader_program()
-{
-  return program;
-}

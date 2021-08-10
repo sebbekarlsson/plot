@@ -5,6 +5,7 @@
 class Actor {
   public:
     Actor(float x, float y);
+    virtual ~Actor() {};
 
     virtual void draw() {};
     virtual void update() {};
@@ -15,11 +16,6 @@ class Actor {
     void set_x(float x);
     void set_y(float y);
 
-    void set_shader_program(ShaderProgram* program);
-    ShaderProgram* get_shader_program();
-
-  protected:
-    ShaderProgram* program;
   private:
     float x;
     float y;

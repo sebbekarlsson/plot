@@ -7,7 +7,8 @@
 
 class Image  {
   public:
-    Image(unsigned int id);
+        Image(unsigned int id);
+        ~Image();
 
     static Image* from_file(const char* filepath);
 
@@ -37,8 +38,6 @@ class Image  {
     void set_y(float y);
     void set_z(float z);
 
-    void set_shader_program(ShaderProgram* program);
-
   private:
     unsigned int id;
     float x;
@@ -48,7 +47,6 @@ class Image  {
     float height;
         Color color;
     bool reversed;
-    ShaderProgram* program;
 };
 
 #endif

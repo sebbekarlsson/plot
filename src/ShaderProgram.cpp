@@ -5,6 +5,7 @@
 
 ShaderProgram::ShaderProgram()
   : program(0)
+  , compiled(0)
 {}
 
 void ShaderProgram::add_shader(Shader* shader)
@@ -14,6 +15,8 @@ void ShaderProgram::add_shader(Shader* shader)
 
 void ShaderProgram::compile()
 {
+  if (this->compiled)
+    return;
   printf("Compiling shader program %p\n", this);
 
   program = glCreateProgram();
@@ -36,12 +39,14 @@ void ShaderProgram::compile()
   }
 
   printf("Done compiling shader %p\n", this);
+
+  this->compiled = 1;
 }
 
 void ShaderProgram::bind()
 {
   glUseProgram(program);
-  release_shaders();
+  // release_shaders();
 }
 
 void ShaderProgram::unbind()

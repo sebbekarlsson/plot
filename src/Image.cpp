@@ -1,12 +1,14 @@
 #include <Actor.hpp>
 #include <GL/glew.h>
 #include <Image.hpp>
+#include <ShaderManager.hpp>
 #include <ShaderProgram.hpp>
 #include <draw.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <stdlib.h>
+extern ShaderManager* SHADER_MANAGER;
 
 Image::Image(unsigned int id)
   : id(id)
@@ -15,6 +17,13 @@ Image::Image(unsigned int id)
   , color({ 1, 1, 1, 1 })
   , reversed(false)
 {}
+
+Image::~Image()
+{
+  if (id) {
+    glDeleteTextures(1, &id);
+  }
+}
 
 void Image::bind()
 {
@@ -102,16 +111,20 @@ void Image::set_z(float z)
 
 void Image::draw()
 {
+  ShaderProgram* program = SHADER_MANAGER->current();
+
+  assert(program != 0);
+
   this->bind();
-  this->program->bind();
-  this->program->set_value4f("color", color.r, color.g, color.b, color.a);
+  program->bind();
+  program->set_value4f("color", color.r, color.g, color.b, color.a);
 
   if (reversed) {
-    draw_quad_reversed(program, this->get_x(), this->get_y(), this->get_z(), this->get_width(),
+    draw_quad_reversed(this->get_x(), this->get_y(), this->get_z(), this->get_width(),
                        this->get_height(), { 255, 255, 255, 1 });
   } else {
-    draw_quad(program, this->get_x(), this->get_y(), this->get_z(), this->get_width(),
-              this->get_height(), { 255, 255, 255, 1 });
+    draw_quad(this->get_x(), this->get_y(), this->get_z(), this->get_width(), this->get_height(),
+              { 255, 255, 255, 1 });
   }
   this->unbind();
 }
@@ -142,9 +155,4 @@ void Image::set_color(Color color)
 void Image::set_reversed(bool reversed)
 {
   this->reversed = reversed;
-}
-
-void Image::set_shader_program(ShaderProgram* program)
-{
-  this->program = program;
 }

@@ -9,9 +9,10 @@
 #include <functional>
 #include <vector>
 #include <Actor.hpp>
+#include <EventEmiter.hpp>
 
 
-class PlotWindow {
+class PlotWindow : public EventEmiter {
   public:
     PlotWindow(int width, int height);
 
@@ -42,12 +43,10 @@ class PlotWindow {
     unsigned int VAO;
     GLFWwindow* window;
     Color background_color;
-    ShaderProgram* program;
     glm::mat4 projection;
     glm::mat4 view;
 
     std::vector<Actor*> actors;
-
 
 };
 #endif
