@@ -4,7 +4,7 @@ project(plot VERSION 0.0.1 DESCRIPTION "plot library")
 
 file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ./)
 
-include_directories(include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 
 FILE(GLOB lib_sources src/*)
