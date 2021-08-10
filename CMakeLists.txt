@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 
 project(plot VERSION 0.0.1 DESCRIPTION "plot library")
 
-file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ./)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ./)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
