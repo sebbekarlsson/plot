@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 
 project(plot VERSION 0.0.1 DESCRIPTION "plot library")
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ./)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR}/.)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
@@ -12,9 +12,6 @@ FILE(GLOB exec_sources src/*)
 
 list(FILTER lib_sources EXCLUDE REGEX "main.cpp")
 
-
-message(${lib_sources})
-message(${exec_sources})
 
 add_compile_options(-g -Wall)
 
@@ -38,7 +35,7 @@ add_executable(plot_e ${exec_sources})
 
 
 
-
+message("Fetching freetype...")
 include(FetchContent)
 FetchContent_Declare(
         freetype2
