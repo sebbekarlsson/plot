@@ -5,6 +5,9 @@
     <img src="img/scrot.png">
 </div>
 
+## WIP
+> Please don't use this as it's a work in progress.
+
 ## Building it
 > First make sure you have `cmake` installed,
 > then run the following commands:
