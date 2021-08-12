@@ -81,6 +81,10 @@ void Plot::compute()
 
   for (int i = 0; i < width; i++) {
     int data_index = (int)(((float)i / (float)width) * (float)len);
+
+
+    data_index = index_modifier ? index_modifier(i, data_index) : data_index;
+
     float value = (data_to_use[data_index] / peak) * ((float)height / scale);
 
     bmp->set_pixel(i, height - value, { 255, 0, 0 });
@@ -194,4 +198,9 @@ void Plot::update() {}
 void Plot::set_smooth(bool smooth)
 {
   this->smooth = smooth;
+}
+
+
+void Plot::set_index_modifier(IndexModifierFunction index_modifier) {
+  this->index_modifier = index_modifier;
 }

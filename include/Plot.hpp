@@ -4,6 +4,10 @@
 #include <pthread.h>
 #include <Actor.hpp>
 #include <Font.hpp>
+#include <functional>
+
+
+typedef std::function<int(int pre, int post)> IndexModifierFunction;
 
 class Plot: public Actor {
   public:
@@ -33,6 +37,8 @@ class Plot: public Actor {
 
     void set_smooth(bool smooth);
 
+    void set_index_modifier(IndexModifierFunction index_modifier);
+
     void update();
 
     private:
@@ -47,6 +53,7 @@ class Plot: public Actor {
     int height;
     BMP* bmp;
     pthread_t t;
+    IndexModifierFunction index_modifier;
 };
 
 
